@@ -36,7 +36,11 @@ public class VelocityTableModell extends AbstractTableModel {
             avg += m.getUeber(); 
         }
         avg /= this.getRowCount();
-        return avg;
+        if(Double.isNaN(avg)) {
+            return 0;
+        } else {
+            return avg;
+        }
     }
     
     public void add(Measurement m) {

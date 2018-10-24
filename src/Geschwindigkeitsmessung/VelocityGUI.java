@@ -3,6 +3,7 @@ package Geschwindigkeitsmessung;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import com.sun.glass.events.MouseEvent;
+import javax.swing.JOptionPane;
 
 public class VelocityGUI extends javax.swing.JFrame {
     private VelocityTableModell model = new VelocityTableModell();
@@ -55,6 +56,11 @@ public class VelocityGUI extends javax.swing.JFrame {
         pMenu.add(sSep);
 
         meAvg.setText("Druchschnittliche Übertretung");
+        meAvg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onDisplayAverage(evt);
+            }
+        });
         pMenu.add(meAvg);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -126,6 +132,11 @@ public class VelocityGUI extends javax.swing.JFrame {
             this.pMenu.show(evt.getComponent(), evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_ScrollPaneMouseReleased
+
+    private void onDisplayAverage(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onDisplayAverage
+        JOptionPane.showMessageDialog(null, "Durchschnittliche Übertretung: " + 
+                model.getAvgUeber(), "Info", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_onDisplayAverage
 
     /**
      * @param args the command line arguments
