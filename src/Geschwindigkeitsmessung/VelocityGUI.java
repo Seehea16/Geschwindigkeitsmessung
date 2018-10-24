@@ -1,21 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Geschwindigkeitsmessung;
 
-/**
- *
- * @author herbe
- */
 public class VelocityGUI extends javax.swing.JFrame {
-
-    /**
-     * Creates new form VelocityGUI
-     */
+    private VelocityTableModell model = new VelocityTableModell();
+    
     public VelocityGUI() {
         initComponents();
+        
+        tMeasurements.setModel(model);
+        tMeasurements.setDefaultRenderer(Object.class, new VelocityTableRenderer());
+        model.load();
+        pack();
     }
 
     /**
@@ -27,21 +21,75 @@ public class VelocityGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        pMenu = new javax.swing.JPopupMenu();
+        meAdd = new javax.swing.JMenuItem();
+        meUpdate = new javax.swing.JMenuItem();
+        meDelete = new javax.swing.JMenuItem();
+        sSep = new javax.swing.JSeparator();
+        meAvg = new javax.swing.JMenuItem();
+        paMessungen = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tMeasurements = new javax.swing.JTable();
+        mbBar = new javax.swing.JMenuBar();
+        meDatei = new javax.swing.JMenu();
+        meSpeichern = new javax.swing.JMenuItem();
+        meLaden = new javax.swing.JMenuItem();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        meAdd.setText("jMenuItem1");
+
+        meUpdate.setText("jMenuItem4");
+
+        meDelete.setText("jMenuItem2");
+
+        meAvg.setText("jMenuItem3");
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Geschwindigkeitsmessungen");
+        getContentPane().setLayout(new java.awt.GridLayout(1, 1));
+
+        paMessungen.setBorder(javax.swing.BorderFactory.createTitledBorder("Messungen"));
+        paMessungen.setLayout(new java.awt.GridLayout(1, 1));
+
+        tMeasurements.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tMeasurements);
+
+        paMessungen.add(jScrollPane1);
+
+        getContentPane().add(paMessungen);
+
+        meDatei.setText("Datei");
+
+        meSpeichern.setText("Speichern");
+        meSpeichern.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                meSpeichernActionPerformed(evt);
+            }
+        });
+        meDatei.add(meSpeichern);
+
+        meLaden.setText("Laden");
+        meDatei.add(meLaden);
+
+        mbBar.add(meDatei);
+
+        setJMenuBar(mbBar);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void meSpeichernActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_meSpeichernActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_meSpeichernActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +127,18 @@ public class VelocityGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuBar mbBar;
+    private javax.swing.JMenuItem meAdd;
+    private javax.swing.JMenuItem meAvg;
+    private javax.swing.JMenu meDatei;
+    private javax.swing.JMenuItem meDelete;
+    private javax.swing.JMenuItem meLaden;
+    private javax.swing.JMenuItem meSpeichern;
+    private javax.swing.JMenuItem meUpdate;
+    private javax.swing.JPopupMenu pMenu;
+    private javax.swing.JPanel paMessungen;
+    private javax.swing.JSeparator sSep;
+    private javax.swing.JTable tMeasurements;
     // End of variables declaration//GEN-END:variables
 }
