@@ -2,18 +2,22 @@ package Geschwindigkeitsmessung;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import com.sun.glass.events.MouseEvent;
+import java.io.File;
+import java.util.ArrayList;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 public class VelocityGUI extends javax.swing.JFrame {
     private VelocityTableModell model = new VelocityTableModell();
+    private final JFileChooser fc = new JFileChooser();
     
     public VelocityGUI() {
         initComponents();
         
         tMeasurements.setModel(model);
         tMeasurements.setDefaultRenderer(Object.class, new VelocityTableRenderer());
-        //model.load();
+        fc.addChoosableFileFilter(new BinFilter());
+        fc.setCurrentDirectory(new File("D:\\Schule\\3. Jahrgang 2018 - 2019\\Programmieren\\source_git\\Geschwindigkeitsmessung"));
         pack();
     }
 
@@ -111,9 +115,19 @@ public class VelocityGUI extends javax.swing.JFrame {
         meDatei.setText("Datei");
 
         meSpeichern.setText("Speichern");
+        meSpeichern.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onSaveData(evt);
+            }
+        });
         meDatei.add(meSpeichern);
 
         meLaden.setText("Laden");
+        meLaden.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onLoadData(evt);
+            }
+        });
         meDatei.add(meLaden);
 
         mbBar.add(meDatei);
@@ -185,6 +199,36 @@ public class VelocityGUI extends javax.swing.JFrame {
             model.delete(indices);
         }
     }//GEN-LAST:event_onRemove
+
+    private void onSaveData(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onSaveData
+        try {    
+            if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                File f = fc.getSelectedFile();
+                model.save(f, this.model.liste.listIterator());
+            }
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "******saveData: Fehler beim Speichern", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();   
+        }
+    }//GEN-LAST:event_onSaveData
+
+    private void onLoadData(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onLoadData
+        try {
+            if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                File f = fc.getSelectedFile();
+                ArrayList<Measurement> ms = model.load(f);
+                model.clear();
+                for(Measurement m : ms) {
+                    model.add(m);
+                }
+            } 
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "******loadData: Fehler beim Laden", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_onLoadData
 
     /**
      * @param args the command line arguments

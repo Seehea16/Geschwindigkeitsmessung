@@ -1,13 +1,22 @@
 package Geschwindigkeitsmessung;
 
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.ListIterator;
 import javax.swing.table.AbstractTableModel;
 
 public class VelocityTableModell extends AbstractTableModel {
-    private List<Measurement> liste = new ArrayList<>();
+    protected List<Measurement> liste = new ArrayList<>();
     
     @Override
     public int getRowCount() {
@@ -63,5 +72,47 @@ public class VelocityTableModell extends AbstractTableModel {
             this.liste.remove(indices[i]-i);
         }
         this.fireTableDataChanged();
+    }
+    
+    public void save(File f, ListIterator<Measurement> ms) throws Exception {
+        OutputStream fos = null;
+        try {
+            fos = new FileOutputStream(f);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            while(ms.hasNext()) {
+                Measurement m = ms.next();
+                oos.writeObject(m);
+            }
+        } catch(IOException e) {
+            System.err.println("Save:" + e.getMessage());
+            throw e;
+        } finally {
+            fos.close();
+        }
+    }
+    
+    public ArrayList<Measurement> load(File f) throws Exception {
+        InputStream fis = null;
+        ArrayList<Measurement> objs = new ArrayList<>();
+        try {
+            fis = new FileInputStream(f);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            while(true) {
+                Measurement m = (Measurement) ois.readObject();
+                objs.add(m);
+            }
+        } catch(EOFException e) {
+            System.err.println("Load: EOF erkannt!");
+            return objs;
+        } catch(IOException e) {
+            System.err.println("Load:" + e.getMessage());
+        } finally {
+            fis.close();
+        }
+        return null;
+    }
+
+    public void clear() {
+        this.liste.clear();
     }
 }

@@ -55,11 +55,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Speichern"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onSaveData"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="meLaden">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Laden"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="onLoadData"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
