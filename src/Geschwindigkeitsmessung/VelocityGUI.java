@@ -49,6 +49,11 @@ public class VelocityGUI extends javax.swing.JFrame {
         pMenu.add(meAdd);
 
         meUpdate.setText("Ändern");
+        meUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onUpdate(evt);
+            }
+        });
         pMenu.add(meUpdate);
 
         meDelete.setText("Löschen");
@@ -118,7 +123,7 @@ public class VelocityGUI extends javax.swing.JFrame {
         dialog.setVisible(true);
         if(dialog.getIsOkay()) {
             model.add(dialog.getNewMeasurement());
-        }
+        }   
     }//GEN-LAST:event_onAddMeasure
 
     private void tMeasurementsMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tMeasurementsMouseReleased
@@ -137,6 +142,34 @@ public class VelocityGUI extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Durchschnittliche Übertretung: " + 
                 model.getAvgUeber(), "Info", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_onDisplayAverage
+
+    private void onUpdate(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUpdate
+        int index = tMeasurements.getSelectedRow();
+        if(index != -1) {
+            Measurement temp = (Measurement) model.getValueAt(index, 0);
+            LocalDate date = temp.getDate();
+            temp = (Measurement) model.getValueAt(index, 1);
+            LocalTime time = temp.getTime();
+            temp = (Measurement) model.getValueAt(index, 2);
+            String kennz = temp.getKennz();
+            temp = (Measurement) model.getValueAt(index, 3);
+            int gem = temp.getGeschw();
+            temp = (Measurement) model.getValueAt(index, 4);
+            int erl = temp.getErl();
+            
+            Measurement m = new Measurement(date, time, kennz, gem, erl);
+            VelocityDlg dialog = new VelocityDlg(this, true, m);
+            dialog.setVisible(true);
+            
+            if(dialog.getIsOkay()) {   
+                Measurement mNeu = dialog.getNewMeasurement();
+                model.change(index, mNeu);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Bitte zu ändernden Wert "
+                    + "auswählen!", "Info", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_onUpdate
 
     /**
      * @param args the command line arguments

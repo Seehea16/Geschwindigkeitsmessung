@@ -52,4 +52,9 @@ public class VelocityTableModell extends AbstractTableModel {
         Collections.sort(this.liste, new CompUeber());
         this.fireTableDataChanged();
     }
+    
+    public void change(int index, Measurement neu) {
+        this.liste.set(index, neu);
+        this.sort();
+    }
 }
