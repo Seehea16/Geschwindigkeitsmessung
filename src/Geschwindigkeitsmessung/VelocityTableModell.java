@@ -57,4 +57,11 @@ public class VelocityTableModell extends AbstractTableModel {
         this.liste.set(index, neu);
         this.sort();
     }
+    
+    public void delete(int[] indices) {
+        for(int i = 0; i < indices.length; i++) {
+            this.liste.remove(indices[i]-i);
+        }
+        this.fireTableDataChanged();
+    }
 }

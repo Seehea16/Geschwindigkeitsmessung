@@ -57,6 +57,11 @@ public class VelocityGUI extends javax.swing.JFrame {
         pMenu.add(meUpdate);
 
         meDelete.setText("Löschen");
+        meDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onRemove(evt);
+            }
+        });
         pMenu.add(meDelete);
         pMenu.add(sSep);
 
@@ -170,6 +175,16 @@ public class VelocityGUI extends javax.swing.JFrame {
                     + "auswählen!", "Info", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_onUpdate
+
+    private void onRemove(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onRemove
+        int[] indices = tMeasurements.getSelectedRows();
+        if(indices.length == 0) {
+            JOptionPane.showMessageDialog(null, "Bitte zu löschende Werte "
+                    + "auswählen!", "Info", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            model.delete(indices);
+        }
+    }//GEN-LAST:event_onRemove
 
     /**
      * @param args the command line arguments
