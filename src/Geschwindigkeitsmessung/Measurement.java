@@ -23,7 +23,7 @@ public class Measurement implements Serializable{
         this.kennz = kennz;
         this.geschw = geschw;
         this.erl = erl;
-        this.ueber = ueber - erl;
+        this.ueber = geschw - erl;
     }
 
     public LocalDate getDate() {

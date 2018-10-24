@@ -8,6 +8,7 @@ package Geschwindigkeitsmessung;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import javax.swing.JOptionPane;
 
@@ -45,7 +46,7 @@ public class VelocityDlg extends javax.swing.JDialog {
         return newMeasurement;
     }
 
-    public boolean isIsOkay() {
+    public boolean getIsOkay() {
         return isOkay;
     }
 
@@ -143,6 +144,9 @@ public class VelocityDlg extends javax.swing.JDialog {
         } catch(NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Alle Werte richtig eingeben!", 
                     "Fehler", JOptionPane.ERROR_MESSAGE);
+        } catch(DateTimeParseException e) {
+            JOptionPane.showMessageDialog(this, "Datumsformat: dd.MM.yyyy\nZeitformat: "
+                    + "mm:HH", "Info", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_onOk
 

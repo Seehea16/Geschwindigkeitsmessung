@@ -1,6 +1,8 @@
 package Geschwindigkeitsmessung;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
@@ -35,5 +37,15 @@ public class VelocityTableModell extends AbstractTableModel {
         }
         avg /= this.getRowCount();
         return avg;
+    }
+    
+    public void add(Measurement m) {
+        this.liste.add(m);
+        this.sort();
+    }
+    
+    public void sort() {
+        Collections.sort(this.liste, new CompUeber());
+        this.fireTableDataChanged();
     }
 }

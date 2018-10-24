@@ -1,5 +1,9 @@
 package Geschwindigkeitsmessung;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import com.sun.glass.events.MouseEvent;
+
 public class VelocityGUI extends javax.swing.JFrame {
     private VelocityTableModell model = new VelocityTableModell();
     
@@ -8,7 +12,7 @@ public class VelocityGUI extends javax.swing.JFrame {
         
         tMeasurements.setModel(model);
         tMeasurements.setDefaultRenderer(Object.class, new VelocityTableRenderer());
-        model.load();
+        //model.load();
         pack();
     }
 
@@ -25,7 +29,7 @@ public class VelocityGUI extends javax.swing.JFrame {
         meAdd = new javax.swing.JMenuItem();
         meUpdate = new javax.swing.JMenuItem();
         meDelete = new javax.swing.JMenuItem();
-        sSep = new javax.swing.JSeparator();
+        sSep = new javax.swing.JPopupMenu.Separator();
         meAvg = new javax.swing.JMenuItem();
         paMessungen = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -35,13 +39,23 @@ public class VelocityGUI extends javax.swing.JFrame {
         meSpeichern = new javax.swing.JMenuItem();
         meLaden = new javax.swing.JMenuItem();
 
-        meAdd.setText("jMenuItem1");
+        meAdd.setText("Hinzufügen");
+        meAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onAddMeasure(evt);
+            }
+        });
+        pMenu.add(meAdd);
 
-        meUpdate.setText("jMenuItem4");
+        meUpdate.setText("Ändern");
+        pMenu.add(meUpdate);
 
-        meDelete.setText("jMenuItem2");
+        meDelete.setText("Löschen");
+        pMenu.add(meDelete);
+        pMenu.add(sSep);
 
-        meAvg.setText("jMenuItem3");
+        meAvg.setText("Druchschnittliche Übertretung");
+        pMenu.add(meAvg);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Geschwindigkeitsmessungen");
@@ -49,6 +63,12 @@ public class VelocityGUI extends javax.swing.JFrame {
 
         paMessungen.setBorder(javax.swing.BorderFactory.createTitledBorder("Messungen"));
         paMessungen.setLayout(new java.awt.GridLayout(1, 1));
+
+        jScrollPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                ScrollPaneMouseReleased(evt);
+            }
+        });
 
         tMeasurements.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -61,6 +81,11 @@ public class VelocityGUI extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tMeasurements.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                tMeasurementsMouseReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(tMeasurements);
 
         paMessungen.add(jScrollPane1);
@@ -70,11 +95,6 @@ public class VelocityGUI extends javax.swing.JFrame {
         meDatei.setText("Datei");
 
         meSpeichern.setText("Speichern");
-        meSpeichern.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                meSpeichernActionPerformed(evt);
-            }
-        });
         meDatei.add(meSpeichern);
 
         meLaden.setText("Laden");
@@ -87,9 +107,25 @@ public class VelocityGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void meSpeichernActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_meSpeichernActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_meSpeichernActionPerformed
+    private void onAddMeasure(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onAddMeasure
+        VelocityDlg dialog = new VelocityDlg(this, true);
+        dialog.setVisible(true);
+        if(dialog.getIsOkay()) {
+            model.add(dialog.getNewMeasurement());
+        }
+    }//GEN-LAST:event_onAddMeasure
+
+    private void tMeasurementsMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tMeasurementsMouseReleased
+        if (evt.getButton() == 3) {
+            this.pMenu.show(this, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_tMeasurementsMouseReleased
+
+    private void ScrollPaneMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ScrollPaneMouseReleased
+        if (evt.getButton() == 3) {
+            this.pMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_ScrollPaneMouseReleased
 
     /**
      * @param args the command line arguments
@@ -138,7 +174,7 @@ public class VelocityGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem meUpdate;
     private javax.swing.JPopupMenu pMenu;
     private javax.swing.JPanel paMessungen;
-    private javax.swing.JSeparator sSep;
+    private javax.swing.JPopupMenu.Separator sSep;
     private javax.swing.JTable tMeasurements;
     // End of variables declaration//GEN-END:variables
 }
