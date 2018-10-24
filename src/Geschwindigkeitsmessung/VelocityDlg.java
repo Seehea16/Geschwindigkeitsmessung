@@ -5,18 +5,48 @@
  */
 package Geschwindigkeitsmessung;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author herbe
  */
 public class VelocityDlg extends javax.swing.JDialog {
-
+    private Measurement newMeasurement;
+    private boolean isOkay = false;
     /**
      * Creates new form VelocityDlg
+     * @param parent
+     * @param modal
      */
     public VelocityDlg(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        tfDate.setText(LocalDate.now().format(Measurement.DTFDATE));
+        tfTime.setText(LocalTime.now().format(Measurement.DTFTIME));
+    }
+    
+    public VelocityDlg(java.awt.Frame parent, boolean modal, Measurement m) {
+        super(parent, modal);
+        initComponents();
+        this.newMeasurement = m;
+        tfDate.setText(this.newMeasurement.getDateAsString());
+        tfTime.setText(this.newMeasurement.getTimeAsString());
+        tfKennz.setText(this.newMeasurement.getKennz());
+        tfGem.setText(this.newMeasurement.getGeschw() + "");
+        tfErl.setText(this.newMeasurement.getErl() + "");
+    }
+
+    public Measurement getNewMeasurement() {
+        return newMeasurement;
+    }
+
+    public boolean isIsOkay() {
+        return isOkay;
     }
 
     /**
@@ -28,21 +58,98 @@ public class VelocityDlg extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        jLabel1 = new javax.swing.JLabel();
+        tfDate = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        tfTime = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        tfKennz = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        tfGem = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        tfErl = new javax.swing.JTextField();
+        btOk = new javax.swing.JButton();
+        btCancel = new javax.swing.JButton();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Eingabedialog");
+        getContentPane().setLayout(new java.awt.GridLayout(6, 2));
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setText("Datum:");
+        getContentPane().add(jLabel1);
+
+        tfDate.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        getContentPane().add(tfDate);
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel2.setText("Uhrzeit:");
+        getContentPane().add(jLabel2);
+
+        tfTime.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        getContentPane().add(tfTime);
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel3.setText("Kennzeichen:");
+        getContentPane().add(jLabel3);
+
+        tfKennz.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        getContentPane().add(tfKennz);
+
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel4.setText("V-Gemessen:");
+        getContentPane().add(jLabel4);
+
+        tfGem.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        getContentPane().add(tfGem);
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setText("V-Erlaubt");
+        getContentPane().add(jLabel5);
+
+        tfErl.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        getContentPane().add(tfErl);
+
+        btOk.setText("Übernehmen");
+        btOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onOk(evt);
+            }
+        });
+        getContentPane().add(btOk);
+
+        btCancel.setText("Abbrechen");
+        btCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                onCancel(evt);
+            }
+        });
+        getContentPane().add(btCancel);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void onOk(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onOk
+        try {
+            LocalDate datum = LocalDate.parse(tfDate.getText(), Measurement.DTFDATE);
+            LocalTime time = LocalTime.parse(tfTime.getText(), Measurement.DTFTIME);
+            String kennz = tfKennz.getText();
+            int gem = Integer.parseInt(tfGem.getText());
+            int erl = Integer.parseInt(tfErl.getText());
+            
+            this.newMeasurement = new Measurement(datum, time, kennz, gem, erl);
+            this.isOkay = true;
+            this.dispose();
+        } catch(NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Alle Werte richtig eingeben!", 
+                    "Fehler", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_onOk
+
+    private void onCancel(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onCancel
+        isOkay = false;
+        this.dispose();
+    }//GEN-LAST:event_onCancel
 
     /**
      * @param args the command line arguments
@@ -87,5 +194,17 @@ public class VelocityDlg extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btCancel;
+    private javax.swing.JButton btOk;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JTextField tfDate;
+    private javax.swing.JTextField tfErl;
+    private javax.swing.JTextField tfGem;
+    private javax.swing.JTextField tfKennz;
+    private javax.swing.JTextField tfTime;
     // End of variables declaration//GEN-END:variables
 }
