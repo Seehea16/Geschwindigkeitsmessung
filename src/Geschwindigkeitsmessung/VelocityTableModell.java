@@ -27,4 +27,13 @@ public class VelocityTableModell extends AbstractTableModel {
         Measurement m = liste.get(rowIndex);
         return m;
     }
+    
+    public double getAvgUeber() {
+        double avg = 0;
+        for(Measurement m : this.liste) {
+            avg += m.getUeber(); 
+        }
+        avg /= this.getRowCount();
+        return avg;
+    }
 }
