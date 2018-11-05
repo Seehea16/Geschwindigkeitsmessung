@@ -1,5 +1,6 @@
 package Geschwindigkeitsmessung;
 
+import java.awt.Color;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,10 +10,14 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 public class VelocityTableModell extends AbstractTableModel {
@@ -24,8 +29,17 @@ public class VelocityTableModell extends AbstractTableModel {
     }
 
     @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return String.class;
+    }
+
+    @Override
     public int getColumnCount() {
         return MeasurementColumnEnum.values().length;
+    }
+    
+    public Measurement getMeasurement(int rowIndex) {
+        return this.liste.get(rowIndex);
     }
 
     @Override
@@ -35,8 +49,57 @@ public class VelocityTableModell extends AbstractTableModel {
     
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Measurement m = liste.get(rowIndex);
-        return m;
+        Measurement m = this.liste.get(rowIndex);
+
+        MeasurementColumnEnum enumIndex = MeasurementColumnEnum.values()[columnIndex];
+        switch (enumIndex) {
+            case DATUM: return m.getDateAsString();
+            case UHRZEIT: return m.getTimeAsString();
+            case KENNZEICHEN: return m.getKennz();
+            case GEMESSEN: return m.getGeschw();
+            case ERLAUBT: return m.getErl();
+            case UEBERTRETUNG: return m.getUeber();
+            default: return "?";
+        }
+    }
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        Measurement mAlt = this.liste.get(rowIndex);
+
+        LocalDate dateAlt = mAlt.getDate();
+        LocalTime timeAlt = mAlt.getTime();
+        String kennzAlt = mAlt.getKennz();
+        int gemAlt = mAlt.getGeschw();
+        int erlAlt = mAlt.getErl();
+
+        MeasurementColumnEnum enumIndex = MeasurementColumnEnum.values()[columnIndex];
+        try {
+            switch(enumIndex) {
+                case DATUM: dateAlt = LocalDate.parse(aValue+"", Measurement.DTFDATE);
+                                break;
+                case UHRZEIT: timeAlt = LocalTime.parse(aValue+"", Measurement.DTFTIME);
+                                break;
+                case KENNZEICHEN: kennzAlt = aValue+"";
+                                break;
+                case GEMESSEN: gemAlt = Integer.parseInt(aValue+"");
+                                break;
+                case ERLAUBT: erlAlt = Integer.parseInt(aValue+"");
+                                break;
+            }
+            Measurement mNeu = new Measurement(dateAlt, timeAlt, kennzAlt, gemAlt, erlAlt);
+            this.change(rowIndex, mNeu);
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "Fehler: " + e.toString(), "Fehler", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        if(columnIndex != 5) {
+            return true;
+        }
+        return false;
     }
     
     public double getAvgUeber() {

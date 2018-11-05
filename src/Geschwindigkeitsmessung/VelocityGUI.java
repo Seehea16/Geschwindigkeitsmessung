@@ -15,7 +15,7 @@ public class VelocityGUI extends javax.swing.JFrame {
         initComponents();
         
         tMeasurements.setModel(model);
-        tMeasurements.setDefaultRenderer(Object.class, new VelocityTableRenderer());
+        tMeasurements.setDefaultRenderer(String.class, new VelocityTableRenderer());
         fc.addChoosableFileFilter(new BinFilter());
         fc.setCurrentDirectory(new File("D:\\Schule\\3. Jahrgang 2018 - 2019\\Programmieren\\source_git\\Geschwindigkeitsmessung"));
         pack();
@@ -165,15 +165,11 @@ public class VelocityGUI extends javax.swing.JFrame {
     private void onUpdate(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_onUpdate
         int index = tMeasurements.getSelectedRow();
         if(index != -1) {
-            Measurement temp = (Measurement) model.getValueAt(index, 0);
+            Measurement temp = model.getMeasurement(index);
             LocalDate date = temp.getDate();
-            temp = (Measurement) model.getValueAt(index, 1);
             LocalTime time = temp.getTime();
-            temp = (Measurement) model.getValueAt(index, 2);
             String kennz = temp.getKennz();
-            temp = (Measurement) model.getValueAt(index, 3);
             int gem = temp.getGeschw();
-            temp = (Measurement) model.getValueAt(index, 4);
             int erl = temp.getErl();
             
             Measurement m = new Measurement(date, time, kennz, gem, erl);
